@@ -1,24 +1,22 @@
 resource "azurerm_linux_virtual_machine" "web" {
-  count               = var.vm_pool["web"]
-  name                = format("web-vm-%s", count.index)
-  location            = var.region
-  resource_group_name = azurerm_resource_group.main.name
-  network_interface_ids = [
-    azurerm_network_interface.web[count.index].id,
-  ]
-  size           = var.vm_size
-  admin_username = "sre"
-  
+  count                 = var.vm_pool["web"]
+  name                  = format("web-vm-%s", count.index)
+  location              = var.region
+  resource_group_name   = azurerm_resource_group.main.name
+  network_interface_ids = [azurerm_network_interface.web[count.index].id]
+  size                  = var.vm_size["web"]
+  admin_username        = "sre"
+
   admin_ssh_key {
     username   = "sre"
     public_key = file("ssh/sre.pub")
   }
-  
+
   os_disk {
     caching              = "ReadWrite"
     storage_account_type = "Standard_LRS"
   }
-  
+
   source_image_reference {
     publisher = "Canonical"
     offer     = "0001-com-ubuntu-server-jammy"
@@ -35,9 +33,9 @@ resource "azurerm_linux_virtual_machine" "app" {
   location              = var.region
   resource_group_name   = azurerm_resource_group.main.name
   network_interface_ids = [azurerm_network_interface.app[count.index].id]
-  size                  = var.vm_size
+  size                  = var.vm_size["app"]
   admin_username        = "sre"
-  
+
   admin_ssh_key {
     username   = "sre"
     public_key = file("ssh/sre.pub")

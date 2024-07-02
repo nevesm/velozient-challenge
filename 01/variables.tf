@@ -5,7 +5,7 @@ variable "project" {
 
 variable "region" {
   description = "The region in which the resources will be created."
-  default     = "East US"
+  default     = "Brazil South"
 }
 
 variable "tags" {
@@ -45,5 +45,8 @@ variable "vm_pool" {
 
 variable "vm_size" {
   description = "The size of the VMs to create."
-  default     = "Standard_B1s"
+  default = {
+    web = "Standard_B1s"
+    app = "Standard_B1s"
+  }
 }
